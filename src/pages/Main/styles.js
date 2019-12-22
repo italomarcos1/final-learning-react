@@ -31,6 +31,8 @@ export const Title = styled.h1`
   font-size: 20px;
   margin-top: 5px;
   margin-bottom: 10px;
+  flex-direction: row;
+  align-items: center;
 `;
 
 export const SubmitButton = styled.button.attrs({
@@ -46,40 +48,59 @@ export const SubmitButton = styled.button.attrs({
   align-items: center;
 `;
 
-export const UserList = styled.ul`
+export const CountryList = styled.ul`
   display: flex;
   margin: 20px auto;
   flex-direction: column;
+  list-style: none;
+  display: grid;
+  margin-top: 30px;
   width: 700px;
   margin-left: 100px;
   background-color: #ffd;
   border-radius: 4px;
+`;
 
-  li {
+export const Country = styled.li.attrs(props => ({
+  disabled: props.disabled,
+}))`
+  /* max-width: 100%; */
+  flex-direction: row;
+  font-family: monospace;
+  display: flex;
+  background-color: #ffd;
+  margin: 20px 20px 20px 20px;
+  justify-items: center;
+
+  &[disabled] {
+    display: none;
+  }
+
+  svg {
+    align-self: right;
+    margin-left: 400px;
+  }
+
+  footer {
+    /* flex: 1; */
+    background: #fff;
+    border: 1px solid #eee;
+    padding: 5px 5px 5px 5px;
+    text-align: center;
+    border-radius: 0 0 5px 5px;
+    text-transform: uppercase;
     font-family: monospace;
-    display: flex;
-    flex-direction: column;
-    margin: 10px 10px;
-    padding: 20px 20px;
-    box-sizing: border-box;
-    list-style: none;
-    justify-content: space-between;
-    align-items: center;
+    font-weight: bold;
+    font-size: 24px;
+    margin-left: 20px;
 
-    & + li {
-      margin: 10px 10px;
-      padding: 20px 20px;
-      border-top: 1px solid #eee;
-    }
-
-    img {
-      border-radius: 50%;
-    }
-
-    strong {
-      background-color: #666;
-      border-radius: 4px;
-      padding: 2px 2px 7px 7px;
+    p {
+      flex: 1;
+      font-size: 16px;
+      color: #333;
+      line-height: 20px;
+      padding: auto;
+      text-align: center;
     }
   }
 `;

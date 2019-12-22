@@ -1,37 +1,56 @@
-import React from 'react';
+import React, { Link } from 'react';
+import { MdSubject } from 'react-icons/md';
+import FlagIcon from '../FlagIcon';
 import api from '../../services/api';
 
-import { Container, Title, UserList, Form, SubmitButton } from './styles';
+import {
+  Container,
+  Title,
+  CountryList,
+  Country,
+  Form,
+  SubmitButton,
+} from './styles';
 
 export default class Main extends React.Component {
   state = {
-    nat: '',
-    amt: '',
-    persons: [],
+    nat: [],
+    amt: [],
+    inputNat: '',
+    inputAmt: '',
+    notLoaded: true,
   };
 
   handleSubmit = async e => {
     e.preventDefault();
 
-    const { nat, amt } = this.state;
+    const { nat, amt, inputNat, inputAmt, notLoaded } = this.state;
 
-    const response = await api.get(`/?results=${amt}&nat=${nat}&noinfo`);
+    this.setState({
+      nat: [...nat, inputNat],
+      amt: [...amt, inputAmt],
+      inputNat: '',
+      inputAmt: '',
+      notLoaded: false,
+    });
 
-    const [...people] = response.data.results;
+    // const response = await api.get(`/?results=${amt}&nat=${nat}&noinfo`); // passar pro users
 
-    this.setState({ persons: people });
+    // const [...people] = response.data.results;
+
+    // this.setState({ persons: people });
   };
 
   handleNat = e => {
-    this.setState({ nat: e.target.value });
+    this.setState({ inputNat: e.target.value });
   };
 
   handleAmt = e => {
-    this.setState({ amt: e.target.value });
+    this.setState({ inputAmt: e.target.value });
   };
 
   render() {
-    const { nat, amt, persons } = this.state;
+    const { nat, amt, inputNat, inputAmt, notLoaded } = this.state;
 
     return (
       <>
@@ -41,33 +60,29 @@ export default class Main extends React.Component {
           <Form onSubmit={this.handleSubmit}>
             <input
               type="text"
-              value={nat}
+              value={inputNat}
               placeholder="Type in your country"
               onChange={this.handleNat}
             />
             <input
               type="text"
-              value={amt}
+              value={inputAmt}
               placeholder="Type in the amount of people"
               onChange={this.handleAmt}
             />
             <SubmitButton>Find Related!</SubmitButton>
           </Form>
         </Container>
-        <UserList>
-          {persons.map(person => (
-            <li>
-              <img src={person.picture.medium} alt="Profile Pic" />
-              <h1>
-                {`${person.name.title}. ${person.name.first} ${person.name.last}`}
-              </h1>
-              <strong>
-                {`${person.location.city}, ${person.location.state} - ${person.location.street.number}`}
-              </strong>
-              <span>{person.email}</span>
-            </li>
+        <CountryList>
+          {nat.map(nation => (
+            <Country disabled={notLoaded}>
+              <FlagIcon code={nation} size="3x" />
+              <footer>{nation}</footer>
+              <p>{`${amt[nat.indexOf(nation)]} people found!`}</p>
+              <Link to="/users">Detalhes</Link>
+            </Country>
           ))}
-        </UserList>
+        </CountryList>
       </>
     );
   }
