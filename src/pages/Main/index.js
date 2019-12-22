@@ -1,12 +1,13 @@
 import React from 'react';
 import api from '../../services/api';
 
-import { Container, Title, Form, SubmitButton } from './styles';
+import { Container, Title, UserList, Form, SubmitButton } from './styles';
 
 export default class Main extends React.Component {
   state = {
     nat: '',
     amt: '',
+    persons: [],
   };
 
   handleSubmit = async e => {
@@ -17,6 +18,8 @@ export default class Main extends React.Component {
     const response = await api.get(`/?results=${amt}&nat=${nat}&noinfo`);
 
     const [...people] = response.data.results;
+
+    this.setState({ persons: people });
   };
 
   handleNat = e => {
@@ -28,7 +31,7 @@ export default class Main extends React.Component {
   };
 
   render() {
-    const { nat, amt } = this.state;
+    const { nat, amt, persons } = this.state;
 
     return (
       <>
@@ -51,6 +54,20 @@ export default class Main extends React.Component {
             <SubmitButton>Find Related!</SubmitButton>
           </Form>
         </Container>
+        <UserList>
+          {persons.map(person => (
+            <li>
+              <img src={person.picture.medium} alt="Profile Pic" />
+              <h1>
+                {`${person.name.title}. ${person.name.first} ${person.name.last}`}
+              </h1>
+              <strong>
+                {`${person.location.city}, ${person.location.state} - ${person.location.street.number}`}
+              </strong>
+              <span>{person.email}</span>
+            </li>
+          ))}
+        </UserList>
       </>
     );
   }
