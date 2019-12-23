@@ -64,13 +64,12 @@ export const CountryList = styled.ul`
 export const Country = styled.li.attrs(props => ({
   disabled: props.disabled,
 }))`
-  /* max-width: 100%; */
+  max-width: 100%;
   flex-direction: row;
   font-family: monospace;
   display: flex;
   background-color: #ffd;
   margin: 20px 20px 20px 20px;
-  justify-items: center;
 
   &[disabled] {
     display: none;
@@ -78,11 +77,17 @@ export const Country = styled.li.attrs(props => ({
 
   svg {
     align-self: right;
-    margin-left: 400px;
+    margin-left: 1000%;
   }
+`;
+
+export const Data = styled.h1`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   footer {
-    /* flex: 1; */
+    flex: 1;
     background: #fff;
     border: 1px solid #eee;
     padding: 5px 5px 5px 5px;
@@ -93,14 +98,13 @@ export const Country = styled.li.attrs(props => ({
     font-weight: bold;
     font-size: 24px;
     margin-left: 20px;
+  }
 
-    p {
-      flex: 1;
-      font-size: 16px;
-      color: #333;
-      line-height: 20px;
-      padding: auto;
-      text-align: center;
-    }
+  small {
+    font-size: 16px;
+    color: #222;
+    padding: auto;
+    white-space: nowrap;
+    margin-left: 10px;
   }
 `;

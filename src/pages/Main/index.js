@@ -1,13 +1,14 @@
-import React, { Link } from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { MdSubject } from 'react-icons/md';
 import FlagIcon from '../FlagIcon';
-import api from '../../services/api';
 
 import {
   Container,
   Title,
   CountryList,
   Country,
+  Data,
   Form,
   SubmitButton,
 } from './styles';
@@ -21,6 +22,32 @@ export default class Main extends React.Component {
     notLoaded: true,
   };
 
+  componentDidMount() {
+    const { nat } = this.state;
+
+    const countries = localStorage.getItem('countries');
+    const amount = localStorage.getItem('amount');
+
+    if (countries || amount)
+      this.setState({ nat: JSON.parse(countries), amt: JSON.parse(amount) });
+
+    console.log(nat.length);
+
+    if (countries && countries.length !== 0) {
+      this.setState({ notLoaded: false });
+    }
+  }
+
+  componentDidUpdate(_, prevState) {
+    const { nat } = this.state;
+    const { amt } = this.state;
+
+    if (prevState.nat !== nat) {
+      localStorage.setItem('countries', JSON.stringify(nat));
+      localStorage.setItem('amount', JSON.stringify(amt));
+    }
+  }
+
   handleSubmit = async e => {
     e.preventDefault();
 
@@ -33,12 +60,6 @@ export default class Main extends React.Component {
       inputAmt: '',
       notLoaded: false,
     });
-
-    // const response = await api.get(`/?results=${amt}&nat=${nat}&noinfo`); // passar pro users
-
-    // const [...people] = response.data.results;
-
-    // this.setState({ persons: people });
   };
 
   handleNat = e => {
@@ -75,11 +96,15 @@ export default class Main extends React.Component {
         </Container>
         <CountryList>
           {nat.map(nation => (
-            <Country disabled={notLoaded}>
+            <Country key={nation} disabled={notLoaded}>
               <FlagIcon code={nation} size="3x" />
-              <footer>{nation}</footer>
-              <p>{`${amt[nat.indexOf(nation)]} people found!`}</p>
-              <Link to="/users">Detalhes</Link>
+              <Data>
+                <footer>{nation}</footer>
+                <small>{`${amt[nat.indexOf(nation)]} people found!`}</small>
+              </Data>
+              <Link to={`/users/${nation}/${amt[nat.indexOf(nation)]}`}>
+                <MdSubject size={32} color="#000" />
+              </Link>
             </Country>
           ))}
         </CountryList>
