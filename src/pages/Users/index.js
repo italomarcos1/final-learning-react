@@ -1,30 +1,32 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import api from '../../services/api';
 import { UserList } from './styles';
 
-export default class Users extends Component {
-  state = {
-    persons: [],
-  };
+export default function Users({ match }) {
+  const [persons, setPersons] = useState([]);
 
-  async componentDidMount() {
-    const { match } = this.props;
-    const { nat } = match.params;
-    const { amt } = match.params;
+  useEffect(() => {
+    async function loadCountries() {
+      const { nation } = match.params;
+      const { amounts } = match.params;
 
-    const response = await api.get(`/?results=${amt}&nat=${nat}&noinfo`); // passar pro users
+      const response = await api.get(
+        `/?results=${amounts}&nat=${nation}&noinfo`
+      ); // passar pro users
 
-    const [...people] = response.data.results;
+      const [...people] = response.data.results;
 
-    this.setState({ persons: people });
-  }
+      setPersons(people);
+    }
 
-  render() {
-    const { persons } = this.state;
-    return (
-      <UserList>
-        {persons.map(person => (
+    loadCountries();
+  }, []);
+
+  return (
+    <UserList>
+      {persons !== null &&
+        persons.map(person => (
           <li key={String(person.id.value)}>
             <img src={person.picture.medium} alt="Profile Pic" />
             <h1>
@@ -36,16 +38,15 @@ export default class Users extends Component {
             <span>{person.email}</span>
           </li>
         ))}
-      </UserList>
-    );
-  }
+    </UserList>
+  );
 }
 
 Users.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
-      nat: PropTypes.string,
-      amt: PropTypes.string,
+      nation: PropTypes.string,
+      amounts: PropTypes.string,
     }),
   }).isRequired,
 };

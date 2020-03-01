@@ -8,9 +8,9 @@ import {
   Title,
   CountryList,
   Country,
-  Data,
   Form,
   SubmitButton,
+  Wrapper,
 } from './styles';
 
 export default function Main() {
@@ -27,10 +27,10 @@ export default function Main() {
       const countries = localStorage.getItem('countries');
       const amnt = localStorage.getItem('amount');
 
-      if (countries) setNations(JSON.parse(countries));
-
-      // se tem country tem amount e vice-versa, testar depois
-      if (amnt) setAmounts(JSON.parse(amnt));
+      if (countries || amnt) {
+        setNations(JSON.parse(countries));
+        setAmounts(JSON.parse(amnt));
+      }
 
       if (countries && countries.length !== 0) {
         setNotLoaded(false);
@@ -49,12 +49,8 @@ export default function Main() {
     loadNations();
   }, [nations]);
 
-  /** console.log(this.connectedUsers.user);
-    console.log(this.connectedUsers['user']);
-this.connectedUsers[user_id] = socket.id;
- */
-  function handleSubmit() {
-    // testar se ta safe tirar o preventDefault
+  function handleSubmit(e) {
+    e.preventDefault();
 
     setNations([...nations, nation]);
     setAmounts([...amounts, amount]);
@@ -66,42 +62,45 @@ this.connectedUsers[user_id] = socket.id;
   }
 
   return (
-    <>
+    <Wrapper>
       <Container>
-        <Title>Type in your country abbr.</Title>
+        <Title>Search people around the Globe</Title>
 
         <Form onSubmit={handleSubmit}>
           <input
             type="text"
             value={nation}
             placeholder="Type in your country"
-            onChange={() => setNation(nation)}
+            onChange={e => setNation(e.target.value)}
           />
           <input
             type="text"
             value={amount}
             placeholder="Type in the amount of people"
-            onChange={() => setAmount(amount)}
+            onChange={e => setAmount(e.target.value)}
           />
-          <SubmitButton>Find Related!</SubmitButton>
+          <SubmitButton>Show me the results!</SubmitButton>
         </Form>
       </Container>
+
       <CountryList>
         {nations !== null &&
           nations.map(nat => (
             <Country key={nat} disabled={notLoaded}>
-              <FlagIcon code={nat} size="3x" />
-              <Data>
+              <div>
+                <FlagIcon code={nat} size="3x" />
+
                 <footer>{nat}</footer>
-                <small>{`${amt[nat.indexOf(nation)]} people found!`}</small>
-                <small>0 people found!</small>
-              </Data>
-              <Link to="/users/gb/5">
+                <small>{`${
+                  amounts[nations.indexOf(nat)]
+                } people found!`}</small>
+              </div>
+              <Link to={`/users/${nat}/${amounts[nations.indexOf(nat)]}`}>
                 <MdSubject size={32} color="#000" />
               </Link>
             </Country>
           ))}
       </CountryList>
-    </>
+    </Wrapper>
   );
 }
