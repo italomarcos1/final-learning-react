@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { MdSubject } from 'react-icons/md';
 import FlagIcon from '../FlagIcon';
@@ -13,102 +13,95 @@ import {
   SubmitButton,
 } from './styles';
 
-export default class Main extends React.Component {
-  state = {
-    nat: [],
-    amt: [],
-    inputNat: '',
-    inputAmt: '',
-    notLoaded: true,
-  };
+export default function Main() {
+  const [nations, setNations] = useState([]);
+  const [amounts, setAmounts] = useState([]);
 
-  componentDidMount() {
-    const { nat } = this.state;
+  const [nation, setNation] = useState('');
+  const [amount, setAmount] = useState('');
 
-    const countries = localStorage.getItem('countries');
-    const amount = localStorage.getItem('amount');
+  const [notLoaded, setNotLoaded] = useState(false);
 
-    if (countries || amount)
-      this.setState({ nat: JSON.parse(countries), amt: JSON.parse(amount) });
+  useEffect(() => {
+    async function loadCountries() {
+      const countries = localStorage.getItem('countries');
+      const amnt = localStorage.getItem('amount');
 
-    console.log(nat.length);
+      if (countries) setNations(JSON.parse(countries));
 
-    if (countries && countries.length !== 0) {
-      this.setState({ notLoaded: false });
+      // se tem country tem amount e vice-versa, testar depois
+      if (amnt) setAmounts(JSON.parse(amnt));
+
+      if (countries && countries.length !== 0) {
+        setNotLoaded(false);
+      }
     }
+
+    loadCountries();
+  }, []);
+
+  useEffect(() => {
+    async function loadNations() {
+      localStorage.setItem('countries', JSON.stringify(nations));
+      localStorage.setItem('amount', JSON.stringify(amounts));
+    }
+
+    loadNations();
+  }, [nations]);
+
+  /** console.log(this.connectedUsers.user);
+    console.log(this.connectedUsers['user']);
+this.connectedUsers[user_id] = socket.id;
+ */
+  function handleSubmit() {
+    // testar se ta safe tirar o preventDefault
+
+    setNations([...nations, nation]);
+    setAmounts([...amounts, amount]);
+
+    setNation('');
+    setAmount('');
+
+    setNotLoaded(false);
   }
 
-  componentDidUpdate(_, prevState) {
-    const { nat } = this.state;
-    const { amt } = this.state;
+  return (
+    <>
+      <Container>
+        <Title>Type in your country abbr.</Title>
 
-    if (prevState.nat !== nat) {
-      localStorage.setItem('countries', JSON.stringify(nat));
-      localStorage.setItem('amount', JSON.stringify(amt));
-    }
-  }
-
-  handleSubmit = async e => {
-    e.preventDefault();
-
-    const { nat, amt, inputNat, inputAmt, notLoaded } = this.state;
-
-    this.setState({
-      nat: [...nat, inputNat],
-      amt: [...amt, inputAmt],
-      inputNat: '',
-      inputAmt: '',
-      notLoaded: false,
-    });
-  };
-
-  handleNat = e => {
-    this.setState({ inputNat: e.target.value });
-  };
-
-  handleAmt = e => {
-    this.setState({ inputAmt: e.target.value });
-  };
-
-  render() {
-    const { nat, amt, inputNat, inputAmt, notLoaded } = this.state;
-
-    return (
-      <>
-        <Container>
-          <Title>Type in your country abbr.</Title>
-
-          <Form onSubmit={this.handleSubmit}>
-            <input
-              type="text"
-              value={inputNat}
-              placeholder="Type in your country"
-              onChange={this.handleNat}
-            />
-            <input
-              type="text"
-              value={inputAmt}
-              placeholder="Type in the amount of people"
-              onChange={this.handleAmt}
-            />
-            <SubmitButton>Find Related!</SubmitButton>
-          </Form>
-        </Container>
-        <CountryList>
-          {nat.map(nation => (
-            <Country key={nation} disabled={notLoaded}>
-              <FlagIcon code={nation} size="3x" />
+        <Form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            value={nation}
+            placeholder="Type in your country"
+            onChange={() => setNation(nation)}
+          />
+          <input
+            type="text"
+            value={amount}
+            placeholder="Type in the amount of people"
+            onChange={() => setAmount(amount)}
+          />
+          <SubmitButton>Find Related!</SubmitButton>
+        </Form>
+      </Container>
+      <CountryList>
+        {nations !== null &&
+          nations.map(nat => (
+            <Country key={nat} disabled={notLoaded}>
+              <FlagIcon code={nat} size="3x" />
               <Data>
-                <footer>{nation}</footer>
+                <footer>{nat}</footer>
                 <small>{`${amt[nat.indexOf(nation)]} people found!`}</small>
+                <small>0 people found!</small>
               </Data>
-              <Link to={`/users/${nation}/${amt[nat.indexOf(nation)]}`}>
+              <Link to="/users/gb/5">
                 <MdSubject size={32} color="#000" />
               </Link>
             </Country>
           ))}
-        </CountryList>
-      </>
-    );
-  }
+      </CountryList>
+    </>
+  );
 }
