@@ -6,7 +6,7 @@ export const UserList = styled.ul`
   flex-direction: column;
   width: 700px;
   margin-left: 100px;
-  background-color: #ffd;
+  background-color: #eee;
   border-radius: 4px;
 
   li {
