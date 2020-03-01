@@ -14,6 +14,7 @@ html, body, #root {
 }
 
 body {
+  background-color:#777;
   background-image: url(${bg});
   background-size: cover;
   background-position: center;

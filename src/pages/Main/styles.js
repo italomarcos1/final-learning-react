@@ -122,9 +122,9 @@ export const Country = styled.li.attrs(props => ({
     }
     footer {
       background: #444;
-      border: 1.5px solid #eee;
+      border: 1.5px solid #bbb;
       border-radius: 5px;
-      color: #eee;
+      color: #bbb;
       font-family: monospace;
       font-weight: normal;
       font-size: 20px;
