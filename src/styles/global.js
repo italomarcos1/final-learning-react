@@ -10,18 +10,20 @@ export default createGlobalStyle`
 }
 
 html, body, #root {
-  min-height: 100%;
+  height: 100%;
 }
 
 body {
+  background: no-repeat;
   background-color:#777;
   background-image: url(${bg});
   background-size: cover;
   background-position: calc(100%);
-  height: 100%;
-  width: 100%;
-  left: 0;
-  top: 0;
   -webkit-font-smoothing: antialiased !important;
 }
+
+button {
+  cursor: pointer;
+}
+
 `;

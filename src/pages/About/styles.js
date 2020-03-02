@@ -1,16 +1,19 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
+  background-color: #292929;
+  display: flex;
+
   height: 100%;
-  width: 100%;
+
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 `;
 
 export const Content = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 150px;
   align-items: center;
   justify-content: center;
 
@@ -20,10 +23,11 @@ export const Content = styled.div`
     height: 300px;
     border-radius: 50%;
     border: 5px solid #e6b32a;
+    user-select: none;
   }
 
   h1 {
-    color: #333;
+    color: #191919;
     border-top: 1px solid #e6b32a;
     border-bottom: 1px solid #e6b32a;
     padding: 20px 20px;

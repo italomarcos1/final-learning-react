@@ -8,17 +8,23 @@ import { Container, Content } from './styles';
 
 export default function About() {
   return (
-    <Container>
+    <>
       <Header />
 
-      <Content>
-        <img src={profile} alt="Italo Marcos" />
-        <h1>Italo Marcos</h1>
-        <div>
-          <FaGithub size={60} color="#e6b32a" />
-          <FaLinkedin size={60} color="#e6b32a" />
-        </div>
-      </Content>
-    </Container>
+      <Container>
+        <Content>
+          <img src={profile} alt="Italo Marcos" />
+          <h1>Italo Marcos</h1>
+          <div>
+            <a href="https://github.com/italomarcos1">
+              <FaGithub size={60} color="#e6b32a" />
+            </a>
+            <a href="https://linkedin.com/in/italomarcos1">
+              <FaLinkedin size={60} color="#e6b32a" />
+            </a>
+          </div>
+        </Content>
+      </Container>
+    </>
   );
 }

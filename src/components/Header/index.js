@@ -17,9 +17,9 @@ export default function Header() {
 
         <aside>
           <Link to="/about">About the Creator</Link>
-          <FaGithub size={35} color="#888">
-            <a href="https://github.com/italomarcos1/final-learning-react" />
-          </FaGithub>
+          <a href="https://github.com/italomarcos1/final-learning-react">
+            <FaGithub size={35} color="#888" />
+          </a>
         </aside>
       </Content>
     </Container>
