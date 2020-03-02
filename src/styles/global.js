@@ -17,7 +17,7 @@ body {
   background-color:#777;
   background-image: url(${bg});
   background-size: cover;
-  background-position: center;
+  background-position: calc(100%);
   height: 100%;
   width: 100%;
   left: 0;

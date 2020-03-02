@@ -5,13 +5,16 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
+  padding: 70px auto;
+  width: 100%;
+  box-sizing: border-box;
 `;
 
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
   margin: auto;
-  margin-top: 100px;
+  margin-top: 20px;
   max-width: 700px;
   padding: 100px;
   border-radius: 20px;
@@ -62,12 +65,13 @@ export const SubmitButton = styled.button.attrs({
 })`
   align-items: center;
   background: #e6b32a;
-  border: 1.2px solid #252525;
+  border: 3px solid #252525;
   border-radius: 8px;
   color: #252525;
   display: flex;
   font-size: 22px;
   font-family: 'Montserrat';
+  font-weight: bold;
   height: 75px;
   justify-content: center;
   margin-top: 20px;
@@ -76,7 +80,7 @@ export const SubmitButton = styled.button.attrs({
 
   &:hover {
     background-color: ${darken(0.09, '#e6b32a')};
-    border: 2.5px solid #252525;
+    border: 5px solid #252525;
     border-radius: 10px;
   }
 `;
@@ -86,10 +90,12 @@ export const CountryList = styled.ul`
   background-color: #444;
   border-radius: 20px;
   display: flex;
+  flex: 1;
   flex-direction: column;
   list-style: none;
   margin: 20px auto;
-  width: 700px;
+  width: 100%;
+  max-width: 700px;
 `;
 
 export const Country = styled.li.attrs(props => ({
@@ -116,8 +122,8 @@ export const Country = styled.li.attrs(props => ({
     justify-content: space-between;
 
     svg {
-      align-self: right;
       margin-right: 20px;
+      margin-top: 20px;
       padding: auto;
     }
     footer {

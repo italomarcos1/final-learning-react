@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { MdSubject } from 'react-icons/md';
+
+import Header from '../../components/Header';
+
 import FlagIcon from '../FlagIcon';
 
 import {
@@ -63,6 +66,7 @@ export default function Main() {
 
   return (
     <Wrapper>
+      <Header />
       <Container>
         <Title>Search people around the Globe</Title>
 
